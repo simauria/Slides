@@ -194,22 +194,31 @@
         pagination = $("<ul>", {
           "class": "slidesjs-pagination"
         }).appendTo($element);
-        $.each(new Array(this.data.total), function(i) {
-          var paginationItem, paginationLink;
+        for (var i=0; i<this.data.total; i++) {
+          var paginationItem, paginationLink, additionalClass;
+          if (i == 0) {
+            additionalClass = " slidesjs-pagination-first-item";
+          }
+          else if (i == this.data.total-1) {
+            additionalClass = " slidesjs-pagination-last-item";
+          }
+          else {
+            additionalClass = "";
+          }
           paginationItem = $("<li>", {
-            "class": "slidesjs-pagination-item"
+            "class": "slidesjs-pagination-item"+additionalClass
           }).appendTo(pagination);
           paginationLink = $("<a>", {
             href: "#",
             "data-slidesjs-item": i,
             html: i + 1
           }).appendTo(paginationItem);
-          return paginationLink.click(function(e) {
+          paginationLink.click(function(e) {
             e.preventDefault();
             _this.stop(true);
             return _this.goto(($(e.currentTarget).attr("data-slidesjs-item") * 1) + 1);
           });
-        });
+        }
       }
       $(window).bind("resize", function() {
         return _this.update();
